@@ -2,6 +2,9 @@
 .env
 composer.lock
 phpunit.xml
+.php_cs
+.php_cs.cache
+.phpunit.result.cache
 
 .idea/
 tests/_temp
