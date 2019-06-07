@@ -7,34 +7,33 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 /**
- * Class BaseModel
- * @package Squadron\Base\Models
+ * Class BaseModel.
  *
  * @property string $uuid
  */
 class BaseModel extends Model
 {
-	use HasUuid;
+    use HasUuid;
 
-	public const CREATED_AT = 'createdAt';
-	public const UPDATED_AT = 'updatedAt';
+    public const CREATED_AT = 'createdAt';
+    public const UPDATED_AT = 'updatedAt';
 
-	public $timestamps = false;
+    public $timestamps = false;
 
-	protected $primaryKey = 'uuid';
-	protected $keyType = 'uuid';
-	public $incrementing = false;
+    protected $primaryKey = 'uuid';
+    protected $keyType = 'uuid';
+    public $incrementing = false;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getTable()
-	{
-		if ($this->table === null)
-		{
-			return str_replace('\\', '', Str::snake(class_basename($this)));
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function getTable()
+    {
+        if ($this->table === null)
+        {
+            return str_replace('\\', '', Str::snake(class_basename($this)));
+        }
 
-		return $this->table;
-	}
+        return $this->table;
+    }
 }

@@ -1,1 +1,3 @@
 preset: laravel
+disabled:
+    - length_ordered_imports
