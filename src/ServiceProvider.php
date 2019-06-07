@@ -9,24 +9,17 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
-	    if ($this->app->runningInConsole())
-	    {
-		    $this->commands([
-			    HashString::class,
-			    SetVersion::class,
-		    ]);
-	    }
+        if ($this->app->runningInConsole())
+        {
+            $this->commands([
+                HashString::class,
+                SetVersion::class,
+            ]);
+        }
 
-	    $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
-    }
-
-	public function register(): void
-	{
-
+        $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
     }
 }

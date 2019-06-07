@@ -1,1 +1,4 @@
 preset: laravel
+disabled:
+    - braces
+    - length_ordered_imports
