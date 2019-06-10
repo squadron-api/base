@@ -8,14 +8,17 @@ use Illuminate\Support\Str;
 
 class DatabaseSchema
 {
-    public static function create(string $tableName, \Closure $tableStructure,
+    public static function create(string $tableName, ?\Closure $tableStructure = null,
                                   ?array $references = null, bool $useTimestamps = false, bool $useSorting = false): void
     {
         Schema::create($tableName, function (Blueprint $table) use ($tableStructure, $references, $useTimestamps, $useSorting) {
             $table->uuid('uuid');
             $table->primary('uuid');
 
-            $tableStructure($table);
+            if ($tableStructure !== null)
+            {
+                $tableStructure($table);
+            }
 
             if ($references !== null)
             {
@@ -75,7 +78,7 @@ class DatabaseSchema
             $table->uuid($primaryKeys[0]);
             $table->uuid($primaryKeys[1]);
 
-            $table->primary($primaryKeys);
+            $table->primary($primaryKeys, 'pivot_primary');
 
             $table->foreign($primaryKeys[0])->references('uuid')->on($tables[0])->onDelete('cascade')->onUpdate('cascade');
             $table->foreign($primaryKeys[1])->references('uuid')->on($tables[1])->onDelete('cascade')->onUpdate('cascade');

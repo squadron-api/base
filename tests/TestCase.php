@@ -35,20 +35,35 @@ abstract class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app): void
     {
+        $dbType = env('DB_TYPE', 'memory');
+
+        if ($dbType === 'memory')
+        {
+            $config = [
+                'driver' => 'sqlite',
+                'database' => ':memory:',
+                'prefix' => '',
+            ];
+        }
+        else
+        {
+            $config = [
+                'driver' => 'mysql',
+                'host' => env('DB_HOST'),
+                'port' => env('DB_PORT'),
+                'database' => env('DB_DATABASE'),
+                'username' => env('DB_USERNAME'),
+                'password' => env('DB_PASSWORD'),
+                'charset' => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'prefix' => '',
+                'strict' => true,
+                'engine' => null,
+            ];
+        }
+
         $app['config']->set('database.default', 'testbench');
-        $app['config']->set('database.connections.testbench', [
-            'driver' => 'mysql',
-            'host' => env('DB_HOST'),
-            'port' => env('DB_PORT'),
-            'database' => env('DB_DATABASE'),
-            'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD'),
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-            'strict' => true,
-            'engine' => null,
-        ]);
+        $app['config']->set('database.connections.testbench', $config);
     }
 
     /**

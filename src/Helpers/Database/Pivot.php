@@ -3,6 +3,7 @@
 namespace Squadron\Base\Helpers\Database;
 
 use Illuminate\Database\Eloquent\Model;
+use Squadron\Base\Exceptions\SquadronHelperException;
 
 class Pivot
 {
@@ -18,7 +19,7 @@ class Pivot
         {
             if (! ($childModel instanceof Model))
             {
-                throw new \InvalidArgumentException(sprintf('Can\'t attach instance of class `%s`', \get_class($childModel)), 400);
+                throw SquadronHelperException::badModelAttach($childModel);
             }
 
             $parent = class_basename($parentModel);

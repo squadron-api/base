@@ -5,7 +5,6 @@ namespace Squadron\Base\Exceptions;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Squadron\Base\Helpers\ApiResponse;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
@@ -14,22 +13,19 @@ class Handler extends ExceptionHandler
 {
     protected $dontReport = [
         '\League\OAuth2\Server\Exception\OAuthServerException',
-        '\GuzzleHttp\Exception\ClientException',
-        '\GuzzleHttp\Exception\ServerException',
     ];
 
     /**
      * Report or log an exception.
-     *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param Exception $exception
+     * @param \Exception $exception
      *
-     * @throws Exception
+     * @throws \Exception
      */
-    public function report(Exception $exception): void
+    public function report(\Exception $exception): void
     {
-        if (! app()->isLocal() && ! app()->runningUnitTests() && $this->shouldReport($exception) && app()->bound('sentry'))
+        if ($this->shouldReport($exception) && ! app()->isLocal() && ! app()->runningUnitTests() && app()->bound('sentry'))
         {
             app('sentry')->captureException($exception);
         }
@@ -40,12 +36,12 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request   $request
-     * @param Exception $exception
+     * @param Request    $request
+     * @param \Exception $exception
      *
      * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, \Exception $exception)
     {
         // Define the message
         $message = 'Sorry, something went wrong.';
@@ -85,7 +81,7 @@ class Handler extends ExceptionHandler
         }
         elseif ($exception instanceof AuthenticationException)
         {
-            return ApiResponse::errorAccess('Unauthenticated');
+            return ApiResponse::errorAccess('Unauthenticated.');
         }
 
         // Return a JSON response with the response array and status code
