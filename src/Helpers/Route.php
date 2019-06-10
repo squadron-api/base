@@ -2,12 +2,26 @@
 
 namespace Squadron\Base\Helpers;
 
+use Squadron\Base\Exceptions\SquadronHelperException;
+
 class Route
 {
+    public static $defaultControllerNamespace = '\\App\\Http\\Controllers\\';
+
     public static function actionExists(string $action): bool
     {
-        [$actionController, $actionMethod] = explode('@', $action, 2);
+        $actionData = explode('@', $action);
 
-        return method_exists(sprintf('\\App\\Http\\Controllers\\%s', $actionController), $actionMethod);
+        if (count($actionData) === 2)
+        {
+            [$actionController, $actionMethod] = $actionData;
+
+            $controllerNamespace = $actionController[0] !== '\\'
+                                      ? self::$defaultControllerNamespace : '';
+
+            return method_exists($controllerNamespace.$actionController, $actionMethod);
+        }
+
+        throw SquadronHelperException::badRouteActionString($action);
     }
 }
