@@ -11,9 +11,7 @@
 	}],
 	"require": {
 		"php": ">=7.2",
-		"illuminate/console": "^5.8",
-		"illuminate/database": "^5.8",
-		"illuminate/support": "^5.8",
+		"laravel/framework": "^5.8",
 		"sentry/sentry-laravel": "^1.0"
 	},
 	"require-dev": {
